@@ -5,7 +5,11 @@ namespace App\Models;
 use ApiPlatform\Metadata\ApiResource;
 use Illuminate\Database\Eloquent\Model;
 
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [
+        'skip_null_values' => false,
+    ],
+)]
 class Movie extends Model
 {
     public $fillable = [
