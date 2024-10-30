@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\TMDBDataProvider;
+use App\Services\TMDBDataSynchroniser;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,8 +16,12 @@ class TMDBProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('tmdb', function () {
+        $this->app->bind('tmdb_data_provider', function () {
             return new TMDBDataProvider(self::CLIENT_ALIAS);
+        });
+
+        $this->app->bind('tmdb_data_sync', function () {
+            return new TMDBDataSynchroniser($this->app->make('tmdb_data_provider'));
         });
     }
 
