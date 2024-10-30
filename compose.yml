@@ -1,0 +1,52 @@
+services:
+    api:
+        image: ${IMAGES_PREFIX:-}api:${DOCKER_TAG:-latest}
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '${APP_PORT:-80}:80'
+            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+            DB_CONNECTION: mysql
+            DB_HOST: ${DB_HOST}
+            DB_PORT: ${DB_PORT}
+            DB_DATABASE: ${DB_DATABASE}
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+            TMDB_API_KEY: ${TMDB_API_KEY}
+            TMDB_API_URL: ${TMDB_API_URL}
+        networks:
+            - plus-que-pro
+        depends_on:
+            - database
+
+    database:
+        image: 'mysql/mysql-server:8.0'
+        environment:
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+        volumes:
+            - 'database-data:/var/lib/mysql'
+            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+        networks:
+            - plus-que-pro
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${DB_PASSWORD}'
+            retries: 3
+            timeout: 5s
+
+networks:
+    plus-que-pro:
+        driver: bridge
+
+volumes:
+    database-data:
+        driver: local
