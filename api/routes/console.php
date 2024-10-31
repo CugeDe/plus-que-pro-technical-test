@@ -11,10 +11,5 @@ Artisan::command('inspire', function () {
 
 // Refresh the movies and genres every day at 2:00 AM
 Schedule::call(function () {
-    DB::table('genre_movie')->delete();
-    DB::table('genres')->delete();
-    DB::table('movies')->delete();
-
-    Artisan::call('app:tmdb:sync-genres');
-    Artisan::call('app:tmdb:sync-movies');
+    Artisan::call('app:warmup');
 })->dailyAt('02:00');
