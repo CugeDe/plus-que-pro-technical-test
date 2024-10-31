@@ -5,6 +5,10 @@ namespace App\Models;
 use ApiPlatform\Laravel\Eloquent\Filter\OrderFilter;
 use ApiPlatform\Laravel\Eloquent\Filter\PartialSearchFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\QueryParameter;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +16,12 @@ use Illuminate\Database\Eloquent\Model;
 #[ApiResource(
     normalizationContext: [
         'skip_null_values' => false,
+    ],
+    operations: [
+        new GetCollection(),
+        new Get(),
+        new Patch(middleware: 'auth:authenticated-api'),
+        new Delete(middleware: 'auth:authenticated-api'),
     ],
 )]
 #[QueryParameter(key: 'sort[:property]', filter: OrderFilter::class)]

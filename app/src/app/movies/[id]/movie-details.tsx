@@ -1,10 +1,11 @@
-import { Col, Row } from 'react-bootstrap';
+import { ButtonGroup, Col, Row } from 'react-bootstrap';
 import * as React from 'react';
 
 import { Genre } from '@/app/types/genre';
 import { getClient } from '@/clients/main';
 import { HydraCollection } from '@/app/types/api';
 import { Movie } from '@/app/types/movie';
+import DeleteButton from './delete-button';
 
 type MovieDetailsProps = {
   movie: Movie;
@@ -48,6 +49,11 @@ const MovieDetails = async ({ movie }: MovieDetailsProps) => {
                     </h5>
                 </div>
                 <div className="text-start">
+                    <div className="text-end">
+                        <ButtonGroup>
+                            <DeleteButton movie={movie} />
+                        </ButtonGroup>
+                    </div>
                     {movie.voteAverage && (
                         <p>
                             Vote average: {movie.voteAverage} ★
