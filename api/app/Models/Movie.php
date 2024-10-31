@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use ApiPlatform\Laravel\Eloquent\Filter\OrderFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\QueryParameter;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
         'skip_null_values' => false,
     ],
 )]
+#[QueryParameter(key: 'sort[:property]', filter: OrderFilter::class)]
 class Movie extends Model
 {
     public $fillable = [

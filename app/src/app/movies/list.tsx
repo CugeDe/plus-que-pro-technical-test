@@ -21,7 +21,15 @@ const List: React.FC<ListProps> = ({ pages }) => {
     const [loading, setLoading] = React.useState(true);
     const [page, setPage] = React.useState(1);
 
-    const handleInfiniteScroll = async () => {
+    const endReached = React.useMemo(() => (
+        chunks.length && chunks[chunks.length - 1]['hydra:view']?.['hydra:next'] === undefined
+    ), [chunks]);
+
+    const handleInfiniteScroll = React.useCallback(async () => {
+        if (endReached) {
+            return;
+        }
+
         try {
             if (
                 window.innerHeight + window.document.documentElement.scrollTop + 1 >=
@@ -33,7 +41,7 @@ const List: React.FC<ListProps> = ({ pages }) => {
         } catch (error) {
             console.error(error);
         }
-    };
+    }, [endReached]);
 
     React.useEffect(() => {
         // First page is already loaded in the parent component
@@ -47,8 +55,8 @@ const List: React.FC<ListProps> = ({ pages }) => {
                 .then((data) => {
                     setChunks((prev) => [...prev, data]);
                 })
-                .catch((error) => {
-                    console.error(error);
+                .catch(() => {
+                    setEndReached(true);
                 })
                 .finally(() => {
                     setLoading(false);
@@ -64,8 +72,9 @@ const List: React.FC<ListProps> = ({ pages }) => {
 
     React.useEffect(() => {
         window.addEventListener("scroll", handleInfiniteScroll);
+
         return () => window.removeEventListener("scroll", handleInfiniteScroll);
-    }, []);
+    }, [handleInfiniteScroll]);
 
     return (
         <Row>
@@ -79,6 +88,11 @@ const List: React.FC<ListProps> = ({ pages }) => {
                     <div className="text-center my-3">
                         <Spinner animation="border" role="status" size="sm" />
                         <span className="sr-only ms-2">Loading...</span>
+                    </div>
+                )}
+                {endReached && (
+                    <div className="text-center my-3">
+                        <span className="text-muted">No more movies to show</span>
                     </div>
                 )}
             </Col>

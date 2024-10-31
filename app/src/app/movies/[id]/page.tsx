@@ -1,10 +1,11 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import * as React from 'react';
-import { getClient } from '@/clients/main';
-import MovieDetails from './movie-details';
-import { Movie } from '../movie';
+
 import { fetchPage } from '../action';
+import { getClient } from '@/clients/main';
 import { HydraCollection } from '@/app/types/api';
+import { Movie } from '@/app/types/movie';
+import MovieDetails from './movie-details';
 
 type PageProps = {
     params: Record<string, string | string[]>;
@@ -33,32 +34,38 @@ const Page = async ({ params }: PageProps) => {
     );
 };
 
-export async function generateStaticPaths() {
+/**
+ * This function gets called at build time.
+ *
+ * It could be optimized a lot by putting all the promises in an array and using
+ * Promise.all to fetch all the pages at once. However, this is a simple example
+ * and we don't need to optimize it at the moment.
+ */
+export async function generateStaticParams() {
+    if (process.env.NODE_ENV === 'development') {
+        return [];
+    }
+
     let page: number | null = 1;
-    const pages: HydraCollection<Movie>['hydra:member'] = [];
+    const ids: HydraCollection<Movie>['hydra:member'][0]['id'][] = [];
 
     do {
-        const res = await fetchPage(page);
+        const res = await fetchPage(page, { itemsPerPage: 100 });
 
         if (res.status === 'error') {
             continue;
         }
 
-        pages.push(...res.data['hydra:member']);
+        ids.push(...res.data['hydra:member'].map((movie: Movie) => movie.id));
 
-        page = res.data['hydra:view']['hydra:next'] !== null ? page + 1 : null;
+        page = Boolean(res.data['hydra:view']?.['hydra:next']) ? page + 1 : null;
     }
     while (page !== null);
 
-    return (res.body as unknown as Movie[]).map((movie) => ({
-        params: {
-            id: movie.id.toString(),
-        },
-    }));
-}
+    return ids.map((id) => ({ params: { id: String(id) } }));
+};
 
-export async function generateStaticParams() {
-    return 
-}
+export const dynamicParams = true;
+export const revalidate = 60 * 60; // 1 hour
 
 export default Page;
