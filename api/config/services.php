@@ -37,6 +37,7 @@ return [
 
     'tmdb' => [
         'base_uri' => env('TMDB_API_URL'),
+        'media_uri' => env('TMDB_MEDIA_API_URL'),
         'api_key' => env('TMDB_API_KEY'),
     ],
 
