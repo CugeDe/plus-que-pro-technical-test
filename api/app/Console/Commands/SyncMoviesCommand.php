@@ -27,7 +27,7 @@ class SyncMoviesCommand extends Command
      * 
      * `-1` means all pages.
      */
-    const PAGE_LIMIT = 5;
+    private const PAGE_LIMIT = 5;
 
     /**
      * Execute the console command.
@@ -40,7 +40,7 @@ class SyncMoviesCommand extends Command
             /** @var TMDBDataSynchroniser $synchroniser */
             $synchroniser = app()->make('tmdb_data_sync');
 
-            $synchroniser->syncPopularMovies(TMDBDataProvider::TIME_WINDOW_DAY, self::PAGE_LIMIT);
+            $synchroniser->syncPopularMovies(TMDBDataProvider::TIME_WINDOW_DAY, 5);
         } catch (\Exception $e) {
             $this->error(sprintf('[KO] Failed to sync. movies: %s', $e->getMessage()));
 

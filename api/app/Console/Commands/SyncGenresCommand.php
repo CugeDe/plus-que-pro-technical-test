@@ -12,7 +12,7 @@ class SyncGenresCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:tmdb:sync-genres';
+    protected $name = 'app:tmdb:sync-genres';
 
     /**
      * The console command description.

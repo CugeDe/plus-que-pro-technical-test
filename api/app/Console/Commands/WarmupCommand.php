@@ -3,10 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 
-class SyncMoviesCommand extends Command
+class WarmupCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -37,8 +36,8 @@ class SyncMoviesCommand extends Command
 
         $this->info('[OK] Database cleaned up successfully.');
 
-        Artisan::call('app:tmdb:sync-genres');
-        Artisan::call('app:tmdb:sync-movies');
+        $this->call('app:tmdb:sync-genres');
+        $this->call('app:tmdb:sync-movies');
 
         $this->info('[OK] API is now warmed up.');
     }
