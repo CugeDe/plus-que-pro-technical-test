@@ -1,0 +1,32 @@
+'use client';
+
+import { Container, Nav, Navbar } from 'react-bootstrap';
+import * as React from 'react';
+import Link from 'next/link';
+
+import AuthenticatedDropdown from './authenticated-dropdown';
+
+const Header = () => {
+    return (
+        <Navbar expand="lg" className="bg-body-tertiary mb-3">
+            <Container>
+            <Link href="/" passHref legacyBehavior>
+                <Navbar.Brand>TMDB - Plus que pro</Navbar.Brand>
+            </Link>
+            <Navbar.Toggle aria-controls="main-navigation" />
+            <Navbar.Collapse id="main-navigation">
+                <Nav className="me-auto">
+                    <Link href="/movies" passHref legacyBehavior>
+                        <Nav.Link>Movies</Nav.Link>
+                    </Link>
+                </Nav>
+                <Nav className='ms-auto'>
+                    <AuthenticatedDropdown />
+                </Nav>
+            </Navbar.Collapse>
+        </Container>
+        </Navbar>
+    );
+}
+
+export default Header;
