@@ -15,6 +15,18 @@ services:
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
         volumes:
             - './api:/var/www/html'
+    
+    app:
+        build:
+            context:    ./app
+            dockerfile: docker/Dockerfile
+            target:     development
+        environment:
+            NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
+        command:  sleep infinity
+        ports:    [ "${APP_PORT}:${APP_PORT}" ]
+        restart:  unless-stopped
+        volumes:  [ ./app:/workspaces/app ]
 
     database:
         ports:

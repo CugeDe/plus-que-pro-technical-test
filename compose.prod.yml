@@ -12,6 +12,15 @@ services:
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
         volumes:
             - './api:/var/www/html'
+    
+    app:
+        build:
+            context:    ./app
+            dockerfile: docker/Dockerfile
+            target:     runner
+        args:
+            # Variables required for the build
+            NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
 
     database:
         ports:

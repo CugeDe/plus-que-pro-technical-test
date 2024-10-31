@@ -2,8 +2,8 @@
 {
 	"name": "TMDB Api - Plus que pro",
 	"dockerComposeFile": [
-		"../compose.yml",
-		"../compose.override.yml"
+		"../../compose.yml",
+		"../../compose.override.yml"
 	],
 	"service": "api",
 	"workspaceFolder": "/var/www/html",
