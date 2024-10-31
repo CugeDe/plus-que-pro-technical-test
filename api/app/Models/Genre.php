@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use Illuminate\Database\Eloquent\Model;
 
 #[ApiResource]

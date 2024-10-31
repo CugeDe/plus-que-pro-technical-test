@@ -1,5 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import NextAuth from "next-auth";
+import NextAuth, { User } from "next-auth";
 
 import { getClient, DEFAULT_OPTIONS } from "@/clients/main";
 
@@ -19,7 +19,7 @@ const handler = NextAuth({
                     prefixUrl: DEFAULT_OPTIONS.prefixUrl?.replace(/\/api$/, ''),
                 }).get('sanctum/csrf-cookie', {  });
                 if (!res.ok) {
-                    return { error: "Authentication failed" };
+                    return Promise.resolve(null);
                 }
 
                 const xsrfCookie = res.headers["set-cookie"]?.find(
@@ -54,19 +54,19 @@ const handler = NextAuth({
                     console.debug("Response", response.body);
 
                     if (response.ok) {
-                        const res = response.body as unknown as object;
+                        const res = response.body as unknown as User;
 
-                        return res;
+                        return Promise.resolve(res);
                     } else {
                         console.log("HTTP error! Status:", response.statusCode)
 
-                        return null;
+                        return Promise.resolve(null);
                     }
                 } catch (error) {
                     console.log("Error", error);
                 }
 
-                return null;
+                return Promise.resolve(null);
             },
         }),
     ],

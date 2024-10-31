@@ -1,13 +1,15 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import * as React from 'react';
 
-import { getClient } from '@/clients/main';
 import { HydraCollection } from '../types/api';
-import { Movie } from './movie';
 import List from './list';
+import { fetchPage } from './action';
+import { Movie } from '@/app/types/movie';
 
 const Page = async () => {
-    const firstPage = (await getClient().get('movies')).body as unknown as HydraCollection<Movie>;
+    const res = await fetchPage(1);
+
+    const firstPage = (res.status === 'success' ? res.data : []) as HydraCollection<Movie>;
 
     return (
         <Container fluid>
@@ -20,5 +22,9 @@ const Page = async () => {
         </Container>
     );
 };
+
+export async function generateStaticParams() {
+    return [];
+}
 
 export default Page;

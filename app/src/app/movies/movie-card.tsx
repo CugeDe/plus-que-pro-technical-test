@@ -1,12 +1,12 @@
 import { Button, Card } from 'react-bootstrap';
 import * as React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { HydraItem } from '../types/api';
-import { Movie } from './movie';
+import { Movie } from '../types/movie';
 
 import styles from './movie-card.module.scss';
-import Link from 'next/link';
 
 type MovieCardProps = {
     movie: HydraItem<Movie>;
@@ -28,7 +28,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
                 <p>Release: {movie.releaseDate}</p>
             </Card.Body>
             <Card.Footer>
-                <Link href={`/movies/${movie.id}`}>
+                <Link href={`/movies/${movie.id}`} passHref legacyBehavior>
                     <Button variant="primary" className="w-100">More details ?</Button>
                 </Link>
             </Card.Footer>
