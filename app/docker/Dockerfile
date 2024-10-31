@@ -1,6 +1,6 @@
-ARG VARIANT=20.17
+ARG VARIANT=20.18
 
-FROM node:${VARIANT}-alpine3.20 AS node_upstream
+FROM node:${VARIANT}-alpine AS node_upstream
 
 WORKDIR /workspaces/app
 # hadolint ignore=DL3018
