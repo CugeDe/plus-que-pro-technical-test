@@ -5,6 +5,7 @@ import { Genre } from '@/app/types/genre';
 import { getClient } from '@/clients/main';
 import { HydraCollection } from '@/app/types/api';
 import { Movie } from '@/app/types/movie';
+import EditButton from './edit-button';
 import DeleteButton from './delete-button';
 
 type MovieDetailsProps = {
@@ -51,6 +52,7 @@ const MovieDetails = async ({ movie }: MovieDetailsProps) => {
                 <div className="text-start">
                     <div className="text-end">
                         <ButtonGroup>
+                            <EditButton movie={movie} />
                             <DeleteButton movie={movie} />
                         </ButtonGroup>
                     </div>
