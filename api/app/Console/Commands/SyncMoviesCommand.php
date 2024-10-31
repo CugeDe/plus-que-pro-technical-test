@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Providers\TMDBProvider;
 use App\Services\TMDBDataProvider;
 use App\Services\TMDBDataSynchroniser;
 use Illuminate\Console\Command;
@@ -34,7 +33,7 @@ class SyncMoviesCommand extends Command
             /** @var TMDBDataSynchroniser $synchroniser */
             $synchroniser = app()->make('tmdb_data_sync');
 
-            $synchroniser->syncPopularMovies(TMDBDataProvider::TIME_WINDOW_DAY);
+            $synchroniser->syncPopularMovies(TMDBDataProvider::TIME_WINDOW_DAY, 5);
         } catch (\Exception $e) {
             $this->error(sprintf('[KO] Failed to sync. movies: %s', $e->getMessage()));
 
