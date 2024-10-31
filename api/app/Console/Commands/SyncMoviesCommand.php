@@ -23,6 +23,13 @@ class SyncMoviesCommand extends Command
     protected $description = 'Sync movies from the TMDB API.';
 
     /**
+     * The amount of pages to fetch from the TMDB API.
+     * 
+     * `-1` means all pages.
+     */
+    const PAGE_LIMIT = 5;
+
+    /**
      * Execute the console command.
      */
     public function handle()
@@ -33,7 +40,7 @@ class SyncMoviesCommand extends Command
             /** @var TMDBDataSynchroniser $synchroniser */
             $synchroniser = app()->make('tmdb_data_sync');
 
-            $synchroniser->syncPopularMovies(TMDBDataProvider::TIME_WINDOW_DAY, 5);
+            $synchroniser->syncPopularMovies(TMDBDataProvider::TIME_WINDOW_DAY, self::PAGE_LIMIT);
         } catch (\Exception $e) {
             $this->error(sprintf('[KO] Failed to sync. movies: %s', $e->getMessage()));
 
