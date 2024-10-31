@@ -8,7 +8,8 @@ import { Movie } from "@/app/types/movie";
 type Response = ActionResponse<HydraCollection<Movie>>;
 
 type Options = {
-    itemsPerPage: number;
+    itemsPerPage?: number;
+    filters?: Record<string, string>
 };
 
 export const fetchPage = async (page = 1, options?: Options): Promise<Response> => {
@@ -19,6 +20,11 @@ export const fetchPage = async (page = 1, options?: Options): Promise<Response> 
     search.set('sort[voteCount]', 'desc');
     if (options?.itemsPerPage) {
         search.set('itemsPerPage', String(options.itemsPerPage));
+    }
+    if (options?.filters) {
+        Object.entries(options.filters).forEach(([key, value]) => {
+            search.set(`filter[${key}]`, String(value));
+        });
     }
 
     const response = await getClient().get(`movies?${search.toString()}`);

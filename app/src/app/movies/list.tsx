@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import { fetchPage } from './action';
 import { HydraCollection } from '../types/api';
-import { Movie } from './movie';
+import { Movie } from '@/app/types/movie';
 import MovieCard from './movie-card';
 
 import styles from './list.module.scss';
@@ -44,8 +44,8 @@ const List: React.FC<ListProps> = ({ pages }) => {
     }, [endReached]);
 
     React.useEffect(() => {
-        // First page is already loaded in the parent component
         if (page > 1) {
+            // First page is already loaded in the parent component
             fetchPage(page)
                 .then((response) => (
                     response.status === 'success'
@@ -55,14 +55,11 @@ const List: React.FC<ListProps> = ({ pages }) => {
                 .then((data) => {
                     setChunks((prev) => [...prev, data]);
                 })
-                .catch(() => {
-                    setEndReached(true);
-                })
                 .finally(() => {
                     setLoading(false);
                 });
         }
-    }, [page]);
+    }, [page])
 
     const items = React.useMemo(() => {
         return chunks.reduce((acc, page) => {

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use ApiPlatform\Laravel\Eloquent\Filter\OrderFilter;
+use ApiPlatform\Laravel\Eloquent\Filter\PartialSearchFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\QueryParameter;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
     ],
 )]
 #[QueryParameter(key: 'sort[:property]', filter: OrderFilter::class)]
+#[QueryParameter(key: 'filter[title]', filter: PartialSearchFilter::class, property: 'title')]
 class Movie extends Model
 {
     public $fillable = [

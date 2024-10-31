@@ -5,8 +5,12 @@ import * as React from 'react';
 import Link from 'next/link';
 
 import AuthenticatedDropdown from './authenticated-dropdown';
+import SearchBar from './search-bar';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
+    const pathname = usePathname();
+
     return (
         <Navbar expand="lg" className="bg-body-tertiary mb-3">
             <Container>
@@ -20,6 +24,13 @@ const Header = () => {
                         <Nav.Link>Movies</Nav.Link>
                     </Link>
                 </Nav>
+                {pathname.startsWith('/movies') && (
+                    <Nav className="w-100">
+                        <Nav.Item className="w-100">
+                            <SearchBar />
+                        </Nav.Item>
+                    </Nav>
+                )}
                 <Nav className='ms-auto'>
                     <AuthenticatedDropdown />
                 </Nav>
