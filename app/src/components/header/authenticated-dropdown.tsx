@@ -1,28 +1,31 @@
 import { Nav, NavDropdown } from 'react-bootstrap';
-import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import Link from 'next/link';
 
+import useSession from '@/security/use-session';
+
 const AuthenticatedDropdown = () => {
-    const { status } = useSession();
+    const { logOut, status } = useSession();
     const router = useRouter();
     const [loading, setLoading] = React.useState(false);
 
     const disconnect = React.useCallback(() => {
         setLoading(true);
 
-        signOut({ redirect: false }).finally(() => {
+        logOut().finally(() => {
             setLoading(false);
             router.push('/');
         });
-    }, [router]);
+    }, [logOut, router]);
 
     if (status !== 'authenticated') {
         return (
-            <Nav.Link onClick={() => signIn('credentials', { redirect: true })}>
-                Login
-            </Nav.Link>
+            <Link href="/login" passHref legacyBehavior>
+                <Nav.Link>
+                    Login
+                </Nav.Link>
+            </Link>
         );
     }
 

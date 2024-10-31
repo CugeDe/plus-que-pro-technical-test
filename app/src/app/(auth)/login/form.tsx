@@ -1,19 +1,22 @@
 'use client';
 
 import { Form as BsForm, Button, Spinner } from 'react-bootstrap';
-import { signIn } from 'next-auth/react';
 import { useForm } from "react-hook-form";
+import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as React from 'react';
 
 import schema from './schema';
 import type { FormValues } from './type';
+import useSession from '@/security/use-session';
 
 const Form: React.FC = () => {
+    const { logIn } = useSession();
+    const router = useRouter();
     const [loading, setLoading] = React.useState(false);
     const methods = useForm<FormValues>({
         defaultValues: {
-            email: '',
+            username: '',
             password: '',
         },
         resolver: yupResolver<FormValues>(schema),
@@ -24,19 +27,22 @@ const Form: React.FC = () => {
     const onSubmit = React.useCallback(async (data: FormValues) => {
         setLoading(true);
 
-        signIn('credentials', data)
+        logIn(data)
+            .then(() => {
+                router.push('/administration');
+            })
             .catch((error) => {
                 console.error('[KO] Failed to login with error:', error);
             })
             .finally(() => { setLoading(false); });
-    }, []);
+    }, [router, logIn]);
 
     return (
         <BsForm onSubmit={handleSubmit(onSubmit)}>
             <BsForm.Group className="mb-3" controlId="email">
                 <BsForm.Label>Email</BsForm.Label>
-                <BsForm.Control type="email" {...methods.register('email')} />
-                {errors.email && <BsForm.Text className="text-danger">{errors.email.message}</BsForm.Text>}
+                <BsForm.Control type="email" {...methods.register('username')} />
+                {errors.username && <BsForm.Text className="text-danger">{errors.username.message}</BsForm.Text>}
             </BsForm.Group>
             <BsForm.Group className="mb-3" controlId="password">
                 <BsForm.Label>Password</BsForm.Label>

@@ -18,6 +18,9 @@ services:
             TMDB_API_URL:              ${TMDB_API_URL}
             TMDB_MEDIA_API_URL:        ${TMDB_MEDIA_API_URL}
             WWWUSER:                   ${WWWUSER}
+        volumes:
+            # Override the default supervisord configuration to add the queue worker
+            - './api/docker/supervisor/conf.d:/etc/supervisor/conf.d'
         networks:
             - plus-que-pro
         depends_on:
@@ -28,10 +31,12 @@ services:
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         environment:
-            API_URL:         ${API_URL}
-            PORT:            ${APP_PORT}
-            NEXTAUTH_URL:    ${NEXTAUTH_URL}
-            NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+            API_CLIENT_ID:     ${API_CLIENT_ID}
+            API_CLIENT_SECRET: ${API_CLIENT_SECRET}
+            API_URL:           ${API_URL}
+            NEXTAUTH_SECRET:   ${NEXTAUTH_SECRET}
+            NEXTAUTH_URL:      ${NEXTAUTH_URL}
+            PORT:              ${APP_PORT}
         networks:
             - plus-que-pro
         depends_on:

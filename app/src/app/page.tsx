@@ -1,95 +1,74 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from "next/link";
+import { Col, Container, Row } from "react-bootstrap";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <Container fluid>
+      <Row>
+        <Col xs={12} md={{ offset: 3, span: 6 }}>
+          <h1 className="text-center mb-5">Welcome to the app for trending Movies</h1>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <p>
+            This application was realized as a technical test for a job
+            application. It uses the <a href="https://www.themoviedb.org/">The Movie Database API</a> to
+            fetch the trending movies and display them in a list.
+          </p>
+          <p>
+            It is built using Next.js, React and typescript. It also uses
+            bootstrap for styling and react-bootstrap for components.
+          </p>
+          <p>
+            The application fetches the trending movies from a REST API developed
+            using API Platform on top of Laravel. Laravel is responsible for
+            fetching the data from The Movie Database API and caching it for a
+            period of time.
+          </p>
+
+          <p>
+            The data stored in the database is automatically updated every
+            24 hours. However, it can be manually refreshed by clicking the
+            refresh button on the top right corner of the administration panel.
+            Or, by running the command <code>php artisan app:warmup</code> in
+            the terminal where the API is running.
+          </p>
+
+          <p>
+            If you want to see more movies inside the application, you can
+            update the <code>PAGE_LIMIT</code> constant in the file{' '}
+            <code>api/app/Console/Commands/SyncMoviesCommand.php</code>.
+            If you want to change this constant to <code>-1</code>, all the
+            movies will be fetched from the API. Be aware that this can take
+            some time and can be a heavy operation.
+          </p>
+
+          <h5>Page structure</h5>
+          {/* Tree of the pages */}
+          <ul>
+            <li>
+              <strong><Link href="/">Home</Link></strong>
+              <ul>
+                <li>
+                  <strong><Link href="/login">Login</Link></strong>
+                </li>
+                <li>
+                  <strong><Link href="/regiter">Register</Link></strong>
+                </li>
+                <li>
+                  <strong><Link href="/movies">Movie list</Link></strong>
+                  <ul>
+                    <li>
+                      <strong>Movie details (only available with a movie ID)</strong>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <strong><Link href="/administration">Administration</Link> (requires authentication)</strong>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </Col>
+      </Row>
+    </Container>
   );
 }

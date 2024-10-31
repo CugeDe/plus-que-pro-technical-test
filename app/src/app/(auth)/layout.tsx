@@ -1,13 +1,19 @@
 'use client';
 
-import { redirect } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import * as React from 'react';
 
-const PublicLayout = ({ children }: React.PropsWithChildren) => {
-  const { status } = useSession();
+import { useRouter } from 'next/navigation';
+import useSession from '@/security/use-session';
 
-  if (status === 'authenticated') return redirect('/administration');
+const PublicLayout = ({ children }: React.PropsWithChildren) => {
+  const { status, loading } = useSession();
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (loading === false && status === 'authenticated') {
+      router.push('/');
+    }
+  }, [status, router, loading]);
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <>{children}</>;

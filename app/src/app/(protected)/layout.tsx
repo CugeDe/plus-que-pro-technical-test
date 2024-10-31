@@ -1,14 +1,14 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
 import * as React from 'react';
 
 import AccessDenied from '@/components/security/access-denied';
+import useSession from '@/security/use-session';
 
 const ProtectedLayout = ({ children }: React.PropsWithChildren) => {
-  const session = useSession();
+  const { status, loading } = useSession();
 
-  if ('authenticated' !== session.status) {
+  if (loading === false && 'unauthenticated' === status) {
     return <AccessDenied />;
   };
 
