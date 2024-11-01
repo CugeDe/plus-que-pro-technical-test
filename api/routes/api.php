@@ -5,7 +5,6 @@ use App\Http\Controllers\RefreshController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:authenticated-api')->group(function () {
     Route::post('/refresh-database', [RefreshController::class, 'refreshData']);

@@ -51,7 +51,7 @@ export default function Home() {
                   <strong><Link href="/login">Login</Link></strong>
                 </li>
                 <li>
-                  <strong><Link href="/regiter">Register</Link></strong>
+                  <strong><Link href="/register">Register</Link></strong>
                 </li>
                 <li>
                   <strong><Link href="/movies">Movie list</Link></strong>

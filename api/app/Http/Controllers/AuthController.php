@@ -31,26 +31,4 @@ class AuthController extends Controller
         ];
         return response()->json($response, 201);
     }
-
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
- 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Login successful',
-            ], Response::HTTP_OK);
-        }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Invalid credentials.',
-        ], Response::HTTP_UNAUTHORIZED);
-    }
 }
