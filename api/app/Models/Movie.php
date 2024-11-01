@@ -23,6 +23,9 @@ use Illuminate\Database\Eloquent\Model;
         new Patch(middleware: 'auth:authenticated-api'),
         new Delete(middleware: 'auth:authenticated-api'),
     ],
+    rules: [
+        'title' => 'required|min:3',
+    ]
 )]
 #[QueryParameter(key: 'sort[:property]', filter: OrderFilter::class)]
 #[QueryParameter(key: 'filter[title]', filter: PartialSearchFilter::class, property: 'title')]
